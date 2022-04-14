@@ -1,8 +1,11 @@
+import os.path
 from pathlib import Path
 
 # Main Path File for Project
 # Set .parent level if MasterApprentice Library is nested
 MAIN_DIR = Path(__file__).resolve().parent.parent
+
+SAVE_DIR = Path(os.path.join(MAIN_DIR, "ProjectLogFiles"))
 
 
 class MasterApprenticeLogVersionType:
@@ -34,4 +37,4 @@ master_logger_enabler = True
 delete_old_apprentice_log = True
 
 # Delete old MasterLogger Logs
-delete_old_master_log = True
+delete_old_master_log = False

@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from MasterApprenticeLib import TD1_Lib_MasterApprentice_Control
 from MasterApprenticeLib.TD1_Lib_MasterApprentice_Control import MasterApprenticeLogVersionType, master_version_type, \
-    master_logger_enabler, MAIN_DIR, delete_old_master_log
+    master_logger_enabler, MAIN_DIR, delete_old_master_log, SAVE_DIR
 from MasterApprenticeLib.TD1_Lib_FileHandling import get_last_modified_time, delete_old_logs
 
 
@@ -16,7 +16,7 @@ The Master Logger is a custom logger used to log the happenings in a script.
 
 # User Defined Project Directory
 
-MASTER_LOGGER_MAIN_DIR = None
+MASTER_LOGGER_MAIN_DIR = SAVE_DIR
 
 main_dir = MASTER_LOGGER_MAIN_DIR if MASTER_LOGGER_MAIN_DIR is not None else MAIN_DIR
 
@@ -66,6 +66,10 @@ def get_new_log_dir():
 
 
 if master_logger_enabler is True:
+    # Directory Exist Check & Creation
+    if os.path.exists(MASTER_LOGGER_MAIN_DIR) is False:
+        os.makedirs(MASTER_LOGGER_MAIN_DIR)
+
     if os.path.exists(get_log_dir()):
         os.rename(get_log_dir(), get_new_log_dir())
 

@@ -184,13 +184,11 @@ class TD1BotClient(commands.Bot):
         :return:
         """
         cmd_handler = CommandHandler(
-            CommandHandler.DEVELOPER,
-            ctx.author.id
+            min_level=CommandHandler.DEVELOPER,
+            user_id=ctx.author.id
         )
 
-        if cmd_handler.check_cmd_lvl() is False:
-            return await ctx.response.send_message("You are not eligible to use this command.") if hasattr(ctx, "response") \
-                else await ctx.send("You are not eligible to use this command.")
+        await cmd_handler.check_cmd_req(ctx)
 
         await ctx.response.send_message("Shutting down bot...") if hasattr(ctx, "response") else \
             await ctx.send("Shutting down bot...")
@@ -204,12 +202,14 @@ class TD1BotClient(commands.Bot):
 
         :param ctx: Context or ApplicationCommandInteraction
         :return:
-        """
-        cmd_handler = CommandHandler(CommandHandler.DEVELOPER, ctx.author.id)
+            """
+        cmd_handler = CommandHandler(
+            min_level=CommandHandler.DEVELOPER,
+            user_id=ctx.author.id,
+            server=Context.guild
+        )
 
-        if cmd_handler.check_cmd_lvl() is False:
-            return await ctx.response.send_message("You are not eligible to use this command.") if hasattr(ctx, "response") \
-                else await ctx.send("You are not eligible to use this command.")
+        await cmd_handler.check_cmd_req(ctx)
 
         await ctx.response.send_message("Restarting bot...") if hasattr(ctx, "response") else \
             await ctx.send("Restarting bot...")
@@ -249,11 +249,13 @@ class TD1BotClient(commands.Bot):
         :param args: The message itself, in str
         :return:
         """
-        cmd_handler = CommandHandler(CommandHandler.DEVELOPER, ctx.author.id)
+        cmd_handler = CommandHandler(
+            min_level=CommandHandler.DEVELOPER,
+            user_id=ctx.author.id,
+            server=Context.guild
+        )
 
-        if cmd_handler.check_cmd_lvl() is False:
-            return await ctx.response.send_message("You are not eligible to use this command.") if hasattr(ctx, "response") \
-                else await ctx.send("You are not eligible to use this command.")
+        await cmd_handler.check_cmd_req(ctx)
 
         await self.msg_presence(self.determine_activity(activity), args)
 
@@ -267,11 +269,13 @@ class TD1BotClient(commands.Bot):
         :param ctx: Context or ApplicationCommandInteraction
         :return:
         """
-        cmd_handler = CommandHandler(CommandHandler.DEVELOPER, ctx.author.id)
+        cmd_handler = CommandHandler(
+            min_level=CommandHandler.DEVELOPER,
+            user_id=ctx.author.id,
+            server=Context.guild
+        )
 
-        if cmd_handler.check_cmd_lvl() is False:
-            return await ctx.response.send_message("You are not eligible to use this command.") if hasattr(ctx, "response") \
-                else await ctx.send("You are not eligible to use this command.")
+        await cmd_handler.check_cmd_req(ctx)
 
         await self.init_presence()
 

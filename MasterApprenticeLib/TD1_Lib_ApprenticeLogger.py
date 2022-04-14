@@ -3,7 +3,7 @@ import enum
 import os
 from pathlib import Path
 from MasterApprenticeLib.TD1_Lib_MasterApprentice_Control import MasterApprenticeLogVersionType, \
-    apprentice_version_type, MAIN_DIR, delete_old_apprentice_log
+    apprentice_version_type, MAIN_DIR, delete_old_apprentice_log, SAVE_DIR
 import MasterApprenticeLib.TD1_Lib_MasterApprentice_Control
 from MasterApprenticeLib.TD1_Lib_FileHandling import get_last_modified_time, delete_old_logs
 
@@ -14,7 +14,7 @@ The Apprentice Logger is a custom logger used to log the happenings in a script.
 """
 
 # User Defined Project Directory
-APPRENTICE_LOGGER_MAIN_DIR = None
+APPRENTICE_LOGGER_MAIN_DIR = SAVE_DIR
 
 main_dir = APPRENTICE_LOGGER_MAIN_DIR if APPRENTICE_LOGGER_MAIN_DIR is not None else MAIN_DIR
 
@@ -63,7 +63,9 @@ def get_new_log_dir():
         return new_log_dir
 
 
-print(get_log_dir())
+# Directory Exist Check & Creation
+if os.path.exists(APPRENTICE_LOGGER_MAIN_DIR) is False:
+    os.makedirs(APPRENTICE_LOGGER_MAIN_DIR)
 
 if os.path.exists(get_log_dir()):
     os.rename(get_log_dir(), get_new_log_dir())

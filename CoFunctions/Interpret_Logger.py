@@ -4,8 +4,10 @@ from disnake import Attachment, User, ApplicationCommandInteraction
 from disnake.ext.commands import Context
 from pathlib import Path
 import datetime
+from MasterApprenticeLib.TD1_Lib_FileHandling import delete_old_logs
+from UtilLib.CommandLevel import CommandHandler
 
-LOGER_ARCHIVE_DIR = Path(os.path.join(Path(__file__).resolve().parent.parent, "UserLogFiles"))
+LOGGER_ARCHIVE_DIR = Path(os.path.join(Path(__file__).resolve().parent.parent, "UserLogFiles"))
 
 
 def get_filename(file: Attachment):
@@ -29,7 +31,7 @@ def check_for_issue(line):
 
 
 async def handle_logfile(log_file: Attachment, user: User, ctx: Context or ApplicationCommandInteraction):
-    filename = Path(os.path.join(LOGER_ARCHIVE_DIR, f"{get_filename(log_file)} [{user.id}].log"))
+    filename = Path(os.path.join(LOGGER_ARCHIVE_DIR, f"{get_filename(log_file)} [{user.id}].log"))
     is_error_sector = False
     encountered_cutoff = True
 
@@ -38,8 +40,8 @@ async def handle_logfile(log_file: Attachment, user: User, ctx: Context or Appli
     # temp_file.close()
 
     # Directory Exist Check & Creation
-    if os.path.exists(LOGER_ARCHIVE_DIR) is False:
-        os.makedirs(LOGER_ARCHIVE_DIR)
+    if os.path.exists(LOGGER_ARCHIVE_DIR) is False:
+        os.makedirs(LOGGER_ARCHIVE_DIR)
 
     await log_file.save(filename)
 
@@ -92,3 +94,17 @@ async def interpret_log_base(ctx: Context or ApplicationCommandInteraction):
         # print(f"The file {file.filename} is a MasterApprentice Log File.")
 
         await handle_logfile(file, ctx.author, ctx)
+
+
+async def delete_old_user_logs(ctx: Context or ApplicationCommandInteraction):
+    cmd_handler = CommandHandler(
+        min_level=CommandHandler.DEVELOPER,
+        user_id=ctx.author.id,
+        server=Context.guild
+    )
+
+    await cmd_handler.check_cmd_req(ctx)
+
+    delete_old_logs(LOGGER_ARCHIVE_DIR, "Apprentice_Log")
+    delete_old_logs(LOGGER_ARCHIVE_DIR, "Master_Log")
+

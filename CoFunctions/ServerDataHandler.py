@@ -17,6 +17,7 @@ class ServerDataHandlerService(BaseLoggerService):
 
 SERVER_DATA_SERVICE = ServerDataHandlerService()
 SERVER_DATA_PATH = Path(os.path.join(Path(__file__).resolve().parent.parent, "ServerData"))
+BOT_OWNER_ID = int(os.getenv("DEVELOPER_ID"))
 
 
 async def on_init(guilds: [Guild]):
@@ -96,7 +97,29 @@ async def on_init(guilds: [Guild]):
             else:
                 SERVER_DATA_SERVICE.info(f"ServerData Entry on [{guild.name}] has up-to-date entries. Going onto next entry (if any)...")
 
-    SERVER_DATA_SERVICE.info(f"ServerData Init Check Process Complete.")
+    SERVER_DATA_SERVICE.info(f"ServerData Init Check Process Complete. Going onto AdminData Init Check...")
+
+    admin_data_file = os.path.join(SERVER_DATA_PATH, f"AdminData.json")
+
+    if os.path.exists(admin_data_file) is False:
+
+        SERVER_DATA_SERVICE.info(f"AdminData Check on Entry does not exist. Creating...")
+
+        with open(admin_data_file, "w") as a_data_file:
+            admin_data = {
+                "admins": []
+            }
+
+            admin_data_json = json_dump(admin_data)
+
+            a_data_file.write(admin_data_json)
+
+            a_data_file.close()
+
+    else:
+        SERVER_DATA_SERVICE.info(f"AdminData Check on Entry exists.")
+
+    SERVER_DATA_SERVICE.info(f"Full Data Init Check Process Complete.")
 
 
 def infill_data(key: str, guild: Guild = None):
@@ -127,7 +150,7 @@ def get_serverdata_value(key: str, guild: Guild):
     return None
 
 
-async def register_admin(user: User, server: Guild):
+async def register_srv_admin(user: User, server: Guild):
     data_file = os.path.join(SERVER_DATA_PATH, f"{server.id}.json")
 
     with open(data_file, "r") as c_data_file:
@@ -135,7 +158,7 @@ async def register_admin(user: User, server: Guild):
 
         c_data_file.close()
 
-    if user == data_dict["server_owner"]:
+    if user.id == data_dict["server_owner"]:
         return False
 
     for admin in data_dict["admins"]:
@@ -146,7 +169,7 @@ async def register_admin(user: User, server: Guild):
     return True
 
 
-async def deregister_admin(user: User, server: Guild):
+async def deregister_srv_admin(user: User, server: Guild):
     data_file = os.path.join(SERVER_DATA_PATH, f"{server.id}.json")
 
     with open(data_file, "r") as c_data_file:
@@ -154,12 +177,81 @@ async def deregister_admin(user: User, server: Guild):
 
         c_data_file.close()
 
-    if user == data_dict["server_owner"]:
+    if user.id == data_dict["server_owner"]:
         return False
 
     for admin in data_dict["admins"]:
         if admin == user.id:
             data_dict["admins"].remove(user.id)
+            return True
+
+    return False
+
+
+def acquire_data(key: str, server: Guild):
+    data_file = os.path.join(SERVER_DATA_PATH, f"{server.id}.json")
+
+    with open(data_file, "r") as c_data_file:
+        data_dict = json_load(c_data_file)
+
+        c_data_file.close()
+
+    for (k, v) in data_dict.items():
+        if k == key:
+            return data_dict[key]
+
+    return None
+
+
+async def register_admin(user: User):
+    admin_data_file = os.path.join(SERVER_DATA_PATH, f"AdminData.json")
+
+    with open(admin_data_file, "r") as a_data_file:
+        data_dict = json_load(a_data_file)
+
+        a_data_file.close()
+
+    if user.id == BOT_OWNER_ID:
+        return False
+
+    for (k, v) in data_dict.items():
+        if v == user.id:
+            return False
+
+    data_dict["admins"].append(user.id)
+
+    return True
+
+
+async def deregister_admin(user: User):
+    admin_data_file = os.path.join(SERVER_DATA_PATH, f"AdminData.json")
+
+    with open(admin_data_file, "r") as a_data_file:
+        data_dict = json_load(a_data_file)
+
+        a_data_file.close()
+
+    if user.id == BOT_OWNER_ID:
+        return False
+
+    for (k, v) in data_dict.items():
+        if v == user.id:
+            data_dict["admins"].remove(user.id)
+            return True
+
+    return False
+
+
+def acquire_admin(user: int):
+    admin_data_file = os.path.join(SERVER_DATA_PATH, f"AdminData.json")
+
+    with open(admin_data_file, "r") as a_data_file:
+        data_dict = json_load(a_data_file)
+
+        a_data_file.close()
+
+    for (k, v) in data_dict.items():
+        if v == user:
             return True
 
     return False
