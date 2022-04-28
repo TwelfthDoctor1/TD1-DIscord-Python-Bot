@@ -83,7 +83,7 @@ if master_logger_enabler is True:
         log_file.write("\n==================================================================================================")
         log_file.write("\nNEW LOG ENTRIES WILL BE APPENDED BELOW. ALL DATETIME WILL FOLLOW THE UK FORMAT.")
         log_file.write("\n==================================================================================================")
-        log_file.write("\nMASTER LOG IS USED UNDER THE DIGRESSION OF TWELFTHDOCTOR1 UNDER THE USAGE OF DEBUG & TESTING.")
+        log_file.write(f"\nMASTER LOG IS USED UNDER THE DIGRESSION OF {TD1_Lib_MasterApprentice_Control.__user__.upper()} UNDER THE USAGE OF DEBUG & TESTING.")
         log_file.write("\n==================================================================================================")
         log_file.close()
 

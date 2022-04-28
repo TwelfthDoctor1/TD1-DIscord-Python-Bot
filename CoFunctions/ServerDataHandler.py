@@ -8,7 +8,11 @@ from UtilLib.LoggerService import BaseLoggerService
 from UtilLib.JSONParser import json_dump, json_load
 
 
+# Base Structure to reference creation & update of ServerData
 SERVER_DATA_STRUCTURE = ["server_guild", "admins", "server_owner", "admin_roles", "allow_events"]
+
+# Structure to disallow tampering of data values for explicit keys - non-specific handling update
+SERVER_DATA_CHANGEABLE = [False, False, False, False, True]
 
 
 class ServerDataHandlerService(BaseLoggerService):
@@ -17,10 +21,16 @@ class ServerDataHandlerService(BaseLoggerService):
 
 SERVER_DATA_SERVICE = ServerDataHandlerService()
 SERVER_DATA_PATH = Path(os.path.join(Path(__file__).resolve().parent.parent, "ServerData"))
-BOT_OWNER_ID = int(os.getenv("DEVELOPER_ID"))
 
 
 async def on_init(guilds: [Guild]):
+    """
+    Function to check on ServerData & AdminData on Bot Init.
+
+    Creation of files when file does not exist.
+    :param guilds:
+    :return:
+    """
     # Directory Exist Check & Creation
     if os.path.exists(SERVER_DATA_PATH) is False:
         os.makedirs(SERVER_DATA_PATH)
@@ -150,11 +160,45 @@ def get_serverdata_value(key: str, guild: Guild):
     return None
 
 
+def key_value_changeable(key):
+    if SERVER_DATA_CHANGEABLE[SERVER_DATA_STRUCTURE.index(key)] is True:
+        return True
+
+    else:
+        return False
+
+
+def update_serverdata_value(key: str, value, guild: Guild):
+    data_file = os.path.join(SERVER_DATA_PATH, f"{guild.id}.json")
+
+    with open(data_file, "r") as c_data_file:
+        data_dict = json_load(c_data_file.read())
+
+        c_data_file.close()
+
+    if key_value_changeable(key) is False:
+        return False
+
+    for (k, v) in data_dict.items():
+        if k == key:
+            data_dict[k] = value
+
+            with open(data_file, "w") as c_data_file:
+                data_json = json_dump(data_dict)
+                c_data_file.write(data_json)
+
+                c_data_file.close()
+
+            return True
+
+    return False
+
+
 async def register_srv_admin(user: User, server: Guild):
     data_file = os.path.join(SERVER_DATA_PATH, f"{server.id}.json")
 
     with open(data_file, "r") as c_data_file:
-        data_dict = json_load(c_data_file)
+        data_dict = json_load(c_data_file.read())
 
         c_data_file.close()
 
@@ -166,6 +210,13 @@ async def register_srv_admin(user: User, server: Guild):
             return False
 
     data_dict["admins"].append(user.id)
+
+    with open(data_file, "w") as c_data_file:
+        data_json = json_dump(data_dict)
+        c_data_file.write(data_json)
+
+        c_data_file.close()
+
     return True
 
 
@@ -173,7 +224,7 @@ async def deregister_srv_admin(user: User, server: Guild):
     data_file = os.path.join(SERVER_DATA_PATH, f"{server.id}.json")
 
     with open(data_file, "r") as c_data_file:
-        data_dict = json_load(c_data_file)
+        data_dict = json_load(c_data_file.read())
 
         c_data_file.close()
 
@@ -183,6 +234,13 @@ async def deregister_srv_admin(user: User, server: Guild):
     for admin in data_dict["admins"]:
         if admin == user.id:
             data_dict["admins"].remove(user.id)
+
+            with open(data_file, "w") as c_data_file:
+                data_json = json_dump(data_dict)
+                c_data_file.write(data_json)
+
+                c_data_file.close()
+
             return True
 
     return False
@@ -192,7 +250,7 @@ def acquire_data(key: str, server: Guild):
     data_file = os.path.join(SERVER_DATA_PATH, f"{server.id}.json")
 
     with open(data_file, "r") as c_data_file:
-        data_dict = json_load(c_data_file)
+        data_dict = json_load(c_data_file.read())
 
         c_data_file.close()
 
@@ -204,10 +262,12 @@ def acquire_data(key: str, server: Guild):
 
 
 async def register_admin(user: User):
+    from bot import BOT_OWNER_ID
+
     admin_data_file = os.path.join(SERVER_DATA_PATH, f"AdminData.json")
 
     with open(admin_data_file, "r") as a_data_file:
-        data_dict = json_load(a_data_file)
+        data_dict = json_load(a_data_file.read())
 
         a_data_file.close()
 
@@ -220,14 +280,22 @@ async def register_admin(user: User):
 
     data_dict["admins"].append(user.id)
 
+    with open(admin_data_file, "w") as c_data_file:
+        data_json = json_dump(data_dict)
+        c_data_file.write(data_json)
+
+        c_data_file.close()
+
     return True
 
 
 async def deregister_admin(user: User):
+    from bot import BOT_OWNER_ID
+
     admin_data_file = os.path.join(SERVER_DATA_PATH, f"AdminData.json")
 
     with open(admin_data_file, "r") as a_data_file:
-        data_dict = json_load(a_data_file)
+        data_dict = json_load(a_data_file.read())
 
         a_data_file.close()
 
@@ -237,6 +305,13 @@ async def deregister_admin(user: User):
     for (k, v) in data_dict.items():
         if v == user.id:
             data_dict["admins"].remove(user.id)
+
+            with open(admin_data_file, "w") as c_data_file:
+                data_json = json_dump(data_dict)
+                c_data_file.write(data_json)
+
+                c_data_file.close()
+
             return True
 
     return False
@@ -246,7 +321,7 @@ def acquire_admin(user: int):
     admin_data_file = os.path.join(SERVER_DATA_PATH, f"AdminData.json")
 
     with open(admin_data_file, "r") as a_data_file:
-        data_dict = json_load(a_data_file)
+        data_dict = json_load(a_data_file.read())
 
         a_data_file.close()
 
@@ -255,3 +330,22 @@ def acquire_admin(user: int):
             return True
 
     return False
+
+
+async def allowable_events(value: bool, server: Guild):
+    data_file = os.path.join(SERVER_DATA_PATH, f"{server.id}.json")
+
+    with open(data_file, "r") as c_data_file:
+        data_dict = json_load(c_data_file.read())
+
+        c_data_file.close()
+
+    data_dict["allow_events"] = value
+
+    with open(data_file, "w") as c_data_file:
+        data_json = json_dump(data_dict)
+        c_data_file.write(data_json)
+
+        c_data_file.close()
+
+    return True

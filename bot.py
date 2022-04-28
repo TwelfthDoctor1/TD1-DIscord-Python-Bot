@@ -1,7 +1,7 @@
 import sys
 import disnake
 from disnake import User, CommandInteraction, ApplicationCommandInteraction
-from disnake.ext.commands import command, Context
+from disnake.ext.commands import command, Context, is_owner, guild_only
 import os
 from dotenv import load_dotenv
 from pathlib import Path
@@ -11,6 +11,7 @@ from MainFunctions.DMHandler import dm_cmd, dm_TD1_cmd
 from UtilLib.CommandLevel import CommandHandler
 from CoFunctions.Interpret_Logger import handle_logfile, interpret_log_base
 from UtilLib.DevTools import lookup_dev_cmd
+from UtilLib.EmojiHandler import get_emoji
 
 ENV_PATH = os.path.join(Path(__file__).resolve().parent, "Discord_Token.env")
 
@@ -20,6 +21,7 @@ load_dotenv(dotenv_path=ENV_PATH)
 # TOKEN = dotenv.get_key(ENV_PATH, "DISCORD_TOKEN")
 
 TOKEN = os.getenv("DISCORD_TOKEN")
+BOT_OWNER_ID = int(os.getenv("DEVELOPER_ID"))
 
 # print(TOKEN)
 
@@ -101,6 +103,20 @@ async def verify(ctx: Context):
     )
 
 
+@client.command()
+async def allowable_events(ctx: Context, value):
+    if hasattr(ctx.guild, "id") is False:
+        return await ctx.send(f"This command can only be used in servers.")
+
+    return client.update_serverdata_cmd(ctx, value)
+
+
+@client.command()
+async def emoji_test(ctx: Context, emoji_id):
+    emoji = await get_emoji(ctx.guild, emoji_id)
+    return await ctx.reply(f"{emoji}")
+
+
 # Slash Commands
 @client.slash_command(name="dm", description="Sends a Direct Message to a specified user.")
 async def dm_slash(inter: ApplicationCommandInteraction, recipient: User, *, message):
@@ -147,4 +163,14 @@ async def uptime_slash(inter: ApplicationCommandInteraction):
     return await client.uptime(inter)
 
 
+@client.slash_command(name="allowable_events", description="Determines whether events by the bot should be allowed on the event channel.")
+async def allowable_events_slash(inter: ApplicationCommandInteraction, value: bool):
+    if hasattr(inter.guild, "id") is False:
+        return await inter.response.send_message(f"This command can only be used in servers.")
+
+    return await client.update_serverdata_cmd(inter, value)
+
+
+# Bot Startup Process
+# Initiate Communication with Discord API and connect to Bot Allocated Account
 client.run(TOKEN)

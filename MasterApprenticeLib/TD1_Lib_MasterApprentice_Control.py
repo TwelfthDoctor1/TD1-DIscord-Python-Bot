@@ -20,9 +20,12 @@ __copyright__ = "Copyright 2020: MasterApprentice Logger Project | © TD1 & TWoC
 __credits__ = "TwelfthDoctor1"
 __license__ = "CC 4.0 or MIT"
 
+# Username
+__user__ = __author__
+
 # Version Control Datum
-__version__ = "Developer Version 1.3.0"
-__status__ = "Development Testing"
+__version__ = "Developer Version 1.4.0 Variant"
+__status__ = "Development Testing | Variant For Use in TD1 Python Bot Project"
 
 
 # The Version Type of Master Apprentice Logger

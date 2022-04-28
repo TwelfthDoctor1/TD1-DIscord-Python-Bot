@@ -82,7 +82,7 @@ with open(get_log_dir(), "w") as log_file:
     log_file.write("\nNEW LOG ENTRIES WILL BE APPENDED BELOW. ALL DATETIME WILL FOLLOW THE UK FORMAT.")
     log_file.write("\n==================================================================================================")
     if apprentice_version_type is not MasterApprenticeLogVersionType.DEVELOPER:
-        log_file.write("\nFor any issues found, please send the Apprentice Log to TwelfthDoctor1.")
+        log_file.write(f"\nFor any issues found, please send the Apprentice Log to {MasterApprenticeLib.TD1_Lib_MasterApprentice_Control.__user__}.")
     else:
         log_file.write("\nApprentice Log under Developer Control.")
     log_file.write("\n==================================================================================================")

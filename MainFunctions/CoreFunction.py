@@ -4,19 +4,22 @@ import subprocess
 import sys
 import time
 from disnake import Activity, ActivityType, Game, Embed, Colour, Intents, ApplicationCommandInteraction, Member, \
-    TextChannel, Guild
+    TextChannel, Guild, Emoji, PartialEmoji
 from disnake.abc import GuildChannel
 from disnake.ext import commands
 from disnake.ext.commands import Context
 from VersionControl import __version__ as proj_vers, __copyright__ as proj_cpr
 from MasterApprenticeLib.TD1_Lib_MasterLogger import MasterLogger
 from MasterApprenticeLib.TD1_Lib_MasterApprentice_Control import __version__ as log_vers, __copyright__ as log_cpr
-from CoFunctions.ServerDataHandler import on_init, get_serverdata_value
+from CoFunctions.ServerDataHandler import on_init, get_serverdata_value, update_serverdata_value, allowable_events
 from UtilLib.LoggerService import BaseLoggerService
+from UtilLib.ServicingPipeline import check_current_version
+from UtilLib.EmojiHandler import get_emoji
 
 # from MasterApprenticeLib.TD1_Lib_ApprenticeLogger import ApprenticeLogger
 from UtilLib.CommandLevel import CommandHandler
 
+# Start Time for Bot Uptime based upon comparison
 START_TIME = time.time()
 
 # Bot Intents [API]
@@ -26,7 +29,7 @@ INTENTS = Intents.all()
 class CoreFunctionService(BaseLoggerService):
     def __init__(self):
         super(CoreFunctionService, self).__init__(
-            module_name="TD1 Python Bot | CoreFunctionService",
+            module_name=f"TD1 Python Bot | {self.__class__.__name__}",
             main_owner="TwelfthDoctor1"
         )
 
@@ -34,6 +37,8 @@ class CoreFunctionService(BaseLoggerService):
 class TD1BotClient(commands.Bot):
     """
     Subclass of the discord.py/disnake Bot Class.
+
+    Core Command Handling should go here.
     """
     def __init__(self):
         super().__init__(
@@ -44,12 +49,14 @@ class TD1BotClient(commands.Bot):
             Bot Prefixes: ~ OR ! OR ?
             """,
             owner_id=os.getenv("DEVELOPER_ID"),
-            test_guilds=[604082560217120778, 569137415051280404, 949322786713788426],
+            # Removal of test guilds, causing issues to CMD Globalisation
+            # test_guilds=[604082560217120778, 569137415051280404, 949322786713788426],
             intents=INTENTS,
             sync_commands_debug=True
         )
         # self.InternalHandler = TD1BotClient()
 
+        # Logger Init - Shift from Raw MasterLogger to Logger Service
         self.master_logger = CoreFunctionService()
         self.dt = datetime.datetime
 
@@ -58,6 +65,8 @@ class TD1BotClient(commands.Bot):
         Change the Bot's Presence to initial message (used in startup on complete).
         :return:
         """
+        # Note: Majority of the defined items in the Activity seems to not be working
+        # Leaving in for now...
         presence = Activity(
             name="Handling Subroutines",
             type=ActivityType.playing,
@@ -145,6 +154,9 @@ class TD1BotClient(commands.Bot):
         # Set Init Presence
         await self.init_presence()
 
+        # Check For Updates
+        check_current_version()
+
         self.master_logger.info(f"Main Init Service Complete.")
 
     async def on_member_join(self, member: Member):
@@ -159,7 +171,7 @@ class TD1BotClient(commands.Bot):
         allow_events: bool = get_serverdata_value("allow_events", guild)
 
         if allow_events is True and event_channel is not None:
-            await event_channel.send(f"Mind the Gap between the train and the platform. Welcome {member.name} to the {guild.name} Express.")
+            await event_channel.send(f"Mind the Gap between the train and the platform. Welcome, {member.name} to the {await get_emoji(guild, '<:GBTHVector:848909712934174764>')} {guild.name} Express.")
 
     async def on_member_remove(self, member: Member):
         """
@@ -173,7 +185,7 @@ class TD1BotClient(commands.Bot):
         allow_events: bool = get_serverdata_value("allow_events", guild)
 
         if allow_events is True and event_channel is not None:
-            await event_channel.send(f"The train is leaving the station. Goodbye {member.name}, and thank you for your patronage on the {guild.name} Express.")
+            await event_channel.send(f"The train is leaving the station. Goodbye, {member.name}, and thank you for your patronage on the {await get_emoji(guild, '<:GBTHVector:848909712934174764>')} {guild.name} Express.")
 
     @staticmethod
     async def shutdown_bot(ctx: Context or ApplicationCommandInteraction):
@@ -185,10 +197,14 @@ class TD1BotClient(commands.Bot):
         """
         cmd_handler = CommandHandler(
             min_level=CommandHandler.DEVELOPER,
-            user_id=ctx.author.id
+            user_id=ctx.author.id,
+            server=ctx.guild
         )
 
-        await cmd_handler.check_cmd_req(ctx)
+        eligibility = await cmd_handler.check_cmd_req(ctx)
+
+        if eligibility is False:
+            return
 
         await ctx.response.send_message("Shutting down bot...") if hasattr(ctx, "response") else \
             await ctx.send("Shutting down bot...")
@@ -206,10 +222,13 @@ class TD1BotClient(commands.Bot):
         cmd_handler = CommandHandler(
             min_level=CommandHandler.DEVELOPER,
             user_id=ctx.author.id,
-            server=Context.guild
+            server=ctx.guild
         )
 
-        await cmd_handler.check_cmd_req(ctx)
+        eligibility = await cmd_handler.check_cmd_req(ctx)
+
+        if eligibility is False:
+            return
 
         await ctx.response.send_message("Restarting bot...") if hasattr(ctx, "response") else \
             await ctx.send("Restarting bot...")
@@ -252,10 +271,13 @@ class TD1BotClient(commands.Bot):
         cmd_handler = CommandHandler(
             min_level=CommandHandler.DEVELOPER,
             user_id=ctx.author.id,
-            server=Context.guild
+            server=ctx.guild
         )
 
-        await cmd_handler.check_cmd_req(ctx)
+        eligibility = await cmd_handler.check_cmd_req(ctx)
+
+        if eligibility is False:
+            return
 
         await self.msg_presence(self.determine_activity(activity), args)
 
@@ -272,10 +294,13 @@ class TD1BotClient(commands.Bot):
         cmd_handler = CommandHandler(
             min_level=CommandHandler.DEVELOPER,
             user_id=ctx.author.id,
-            server=Context.guild
+            server=ctx.guild
         )
 
-        await cmd_handler.check_cmd_req(ctx)
+        eligibility = await cmd_handler.check_cmd_req(ctx)
+
+        if eligibility is False:
+            return
 
         await self.init_presence()
 
@@ -298,3 +323,22 @@ class TD1BotClient(commands.Bot):
             return ActivityType.competing
         else:
             return ActivityType.playing
+
+    @staticmethod
+    async def update_serverdata_cmd(ctx: Context or ApplicationCommandInteraction, value: bool):
+        cmd_handler = CommandHandler(
+            min_level=CommandHandler.SRV_OWNER,
+            max_level=CommandHandler.SRV_OWNER,
+            server=ctx.guild,
+            user_id=ctx.author.id
+        )
+
+        eligibility = await cmd_handler.check_cmd_req(ctx)
+
+        if eligibility is False:
+            return
+
+        await allowable_events(value, ctx.guild)
+
+        return await ctx.response.send_message(f"Allowable Events for {ctx.guild.name} is set to {value}.") if hasattr(ctx, "response") \
+            else await ctx.send(f"Allowable Events for {ctx.guild.name} is set to {value}.")
