@@ -161,16 +161,16 @@ def check_current_version():
                 to_console=False
             )
 
-        # Final Verdict Response
-        if NEED_UPDATE is True:
-            PIPELINE_SERVICE.info(
-                f"[Current Version: {__version__} | GitHub Version: {git_version}]"
-                f"\nThere is an update available to the program. You can update it through GitHub or "
-                f"by locally cloning to your repository."
-            )
-        else:
-            PIPELINE_SERVICE.info(
-                f"[Current Version: {__version__} | GitHub Version: {git_version}]"
-                f"\nCurrent version of code is up-to-date."
-            )
+    # Final Verdict Response
+    if NEED_UPDATE is True:
+        PIPELINE_SERVICE.info(
+            f"[Current Version: {__version__} | GitHub Version: {git_version}]"
+            f"\nThere is an update available to the program. You can update it through GitHub or "
+            f"by locally cloning to your repository."
+        )
+    else:
+        PIPELINE_SERVICE.info(
+            f"[Current Version: {__version__} | GitHub Version: {git_version}]"
+            f"\nCurrent version of code is up-to-date."
+        )
 

@@ -108,7 +108,7 @@ async def allowable_events(ctx: Context, value):
     if hasattr(ctx.guild, "id") is False:
         return await ctx.send(f"This command can only be used in servers.")
 
-    return client.update_serverdata_cmd(ctx, value)
+    return await client.update_serverdata_cmd(ctx, value)
 
 
 @client.command()

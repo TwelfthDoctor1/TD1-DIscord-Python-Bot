@@ -108,7 +108,7 @@ class TD1BotClient(commands.Bot):
         embed.set_footer(text="Showing Uptime")
         embed.set_author(name=self.user, icon_url=self.user.avatar.url)
 
-        await ctx.response.send_message(embed=embed) if hasattr(ctx, "response") else ctx.send(embed=embed)
+        await ctx.response.send_message(embed=embed) if hasattr(ctx, "response") else await ctx.send(embed=embed)
 
     async def msg_presence(self, activity: ActivityType, message: str):
         """
