@@ -175,8 +175,8 @@ async def allowable_events_slash(inter: ApplicationCommandInteraction, value: bo
 
 @client.slash_command(name="the_end_paradox", description='Create "The end is never the end" statement.')
 async def end_paraloop_slash(inter: ApplicationCommandInteraction, cycles: int):
-    if cycles <= 0 or cycles > 141:
-        cycles = 141
+    if cycles <= 0 or cycles > 116:
+        cycles = 116
 
     await end_paraloop(cycles, inter)
 
