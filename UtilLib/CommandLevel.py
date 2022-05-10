@@ -121,9 +121,10 @@ class CommandHandler:
     async def check_cmd_req(self, ctx: Context or ApplicationCommandInteraction, message=None):
         """
         Function to check command eligibility based on the User and the Command Level.
+
         :param ctx: The Context or ApplicationCommandInteraction [IMPORTANT]
         :param message: The error message to be used.
-        :return:
+        :return: True OR False
         """
         if self.check_min_lvl() is False or self.check_max_lvl() is False:
             if message is None:

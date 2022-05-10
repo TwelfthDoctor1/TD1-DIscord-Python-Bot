@@ -34,6 +34,10 @@ class CoreFunctionService(BaseLoggerService):
         )
 
 
+class TD1BotContext(Context):
+    pass
+
+
 class TD1BotClient(commands.Bot):
     """
     Subclass of the discord.py/disnake Bot Class.
@@ -65,7 +69,7 @@ class TD1BotClient(commands.Bot):
         Change the Bot's Presence to initial message (used in startup on complete).
         :return:
         """
-        # Note: Majority of the defined items in the Activity seems to not be working
+        # Note: Most of the defined items in the Activity seems to not be working
         # Leaving in for now...
         presence = Activity(
             name="Handling Subroutines",
@@ -171,7 +175,7 @@ class TD1BotClient(commands.Bot):
         allow_events: bool = get_serverdata_value("allow_events", guild)
 
         if allow_events is True and event_channel is not None:
-            await event_channel.send(f"Mind the Gap between the train and the platform. Welcome, {member.name} to the {await get_emoji(guild, '<:GBTHVector:848909712934174764>')} {guild.name} Express.")
+            await event_channel.send(f"Mind the Gap between the train and the platform. Welcome, {member.name} to the {get_emoji(self.emojis, '<:GBTHVector:848909712934174764>')} {guild.name} Express.")
 
     async def on_member_remove(self, member: Member):
         """
@@ -185,7 +189,7 @@ class TD1BotClient(commands.Bot):
         allow_events: bool = get_serverdata_value("allow_events", guild)
 
         if allow_events is True and event_channel is not None:
-            await event_channel.send(f"The train is leaving the station. Goodbye, {member.name}, and thank you for your patronage on the {await get_emoji(guild, '<:GBTHVector:848909712934174764>')} {guild.name} Express.")
+            await event_channel.send(f"The train is leaving the station. Goodbye, {member.name}, and thank you for your patronage on the {get_emoji(self.emojis, '<:GBTHVector:848909712934174764>')} {guild.name} Express.")
 
     @staticmethod
     async def shutdown_bot(ctx: Context or ApplicationCommandInteraction):

@@ -5,6 +5,8 @@ from disnake.ext.commands import command, Context, is_owner, guild_only
 import os
 from dotenv import load_dotenv
 from pathlib import Path
+
+from CoFunctions.Paraloop import end_paraloop
 from MainFunctions.CoreFunction import TD1BotClient
 import subprocess
 from MainFunctions.DMHandler import dm_cmd, dm_TD1_cmd
@@ -169,6 +171,14 @@ async def allowable_events_slash(inter: ApplicationCommandInteraction, value: bo
         return await inter.response.send_message(f"This command can only be used in servers.")
 
     return await client.update_serverdata_cmd(inter, value)
+
+
+@client.slash_command(name="the_end_paradox", description='Create "The end is never the end" statement.')
+async def end_paraloop_slash(inter: ApplicationCommandInteraction, cycles: int):
+    if cycles <= 0 or cycles > 141:
+        cycles = 141
+
+    await end_paraloop(cycles, inter)
 
 
 # Bot Startup Process
