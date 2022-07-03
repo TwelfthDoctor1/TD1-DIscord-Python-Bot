@@ -30,7 +30,7 @@ class DirectMessageHandler:
 
         await self.recipient.send(embed=embed)
 
-    async def send_message_dev(self, message):
+    async def send_message_raw(self, message):
         await self.recipient.send(message)
 
 

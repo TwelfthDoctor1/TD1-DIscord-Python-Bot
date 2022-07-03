@@ -1,0 +1,177 @@
+{
+  "devaccesspanel": {
+    "name": "Developer Access Panel [DevAccessPanel]",
+    "description": "A mod that aims to organise, add new cheats and simplify existing cheats.",
+    "url": "https://www.patreon.com/posts/48324133",
+    "supported": true,
+    "to_show": true
+  },
+  "tms": {
+    "name": "Teleport Memory System [TMS]",
+    "description": "A mod that aims to fix issues caused by teleport enabled usage and adds teleport configurability, disallow teleports in certain scenarios, etc.",
+    "url": "https://www.patreon.com/posts/51213031",
+    "supported": true,
+    "to_show": true
+  },
+  "masterspells": {
+    "name": "Sage of Mastery Magic + Alchemy",
+    "description": "A mod that adds 2 new Sages, 25 spells and 15 potions into the game. Requires the Spellbook Injector.",
+    "url": "https://modthesims.info/download.php?t=643617",
+    "supported": false,
+    "to_show": true
+  },
+  "occulthybrid": {
+    "name": "Occult Hybrid Unlocker & Stabilizer",
+    "description": "A mod that allows transformations into hybrids and stabilize Secondary Form transformation for Hybrids.",
+    "url": "https://modthesims.info/download.php?t=643617&cb=1656102600",
+    "supported": true,
+    "to_show": true
+  },
+  "spellcurses": {
+    "name": "SpellCurses [Predecessor of MasterSpells]",
+    "description": "No one is gonna see this welp.",
+    "url": "Nope",
+    "supported": false,
+    "to_show": false
+  },
+  "sage_mote_att": {
+    "name": "Sage Attractors, Magic Motes & Magic Runes",
+    "description": "A mod that adds the Sage Attractors, Magic Motes and Magic Runes into the game.",
+    "url": "https://modthesims.info/download.php?t=647062",
+    "supported": true,
+    "to_show": true
+  },
+  "batuu_allow": {
+    "name": "Allow Outfit + Occult Int in Batuu",
+    "description": "A mod that allows Regular Outfits and Occult Interactions in Batuu.",
+    "url": "https://modthesims.info/download.php?t=647129",
+    "supported": true,
+    "to_show": true
+  },
+  "nofade_col": {
+    "name": "No Fade Columns",
+    "description": "A mod that enables No Fade on Columns.",
+    "url": "https://www.patreon.com/posts/51438757",
+    "supported": true,
+    "to_show": true
+  },
+  "custom_vamp_perks": {
+    "name": "Custom Vampire Perks",
+    "description": "A mod that adds a few perks into the game.",
+    "url": "https://modthesims.info/download.php?t=648143",
+    "supported": true,
+    "to_show": true
+  },
+  "choose_your_own": {
+    "name": "Choose Your Own",
+    "description": "A mod that allows you to choose the clothing for certain interactions.",
+    "url": "https://modthesims.info/download.php?t=649909",
+    "supported": true,
+    "to_show": true
+  },
+  "ttv": {
+    "name": "Travel To Venue",
+    "description": "A mod that allows you to Travel to hidden lots and go to Vacation Worlds.",
+    "url": "https://td1sims.tumblr.com/post/635457539495084032/travel-to-venue",
+    "supported": true,
+    "to_show": true
+  },
+  "nooutfitchange": {
+    "name": "Force No Outfit Change",
+    "description": "A mod that disallows changing of clothes when enabled.",
+    "url": "https://td1sims.tumblr.com/post/637763615549751296/debug-small-mods-3-mods-release",
+    "supported": true,
+    "to_show": true
+  },
+  "celeb_dis_mod": {
+    "name": "Celebrity Disguise Modification",
+    "description": "A mod that allow celebrities to disguise whilst on the fly.",
+    "url": "https://td1sims.tumblr.com/post/637763615549751296/debug-small-mods-3-mods-release",
+    "supported": true,
+    "to_show": true
+  },
+  "unlock_recipes": {
+    "name": "Unlock Recipes",
+    "description": "A mod that unlocks some obscure recipes.",
+    "url": "https://td1sims.tumblr.com/post/637763615549751296/debug-small-mods-3-mods-release",
+    "supported": true,
+    "to_show": true
+  },
+  "immortal_mod": {
+    "name": "Immortality Modified",
+    "description": "A mod that alters the Immortality VFX to allow toggling of the VFX.",
+    "url": "https://td1sims.tumblr.com/post/638109570500378624/rom-immortality-modified?is_related_post=1",
+    "supported": true,
+    "to_show": true
+  },
+  "eff_mach": {
+    "name": "Effects Machine Reset Thingy",
+    "description": "Well, Dr Gluon told me to make this mod.",
+    "url": "Uh no",
+    "supported": false,
+    "to_show": false
+  },
+  "bonehilda": {
+    "name": "Stay Longer, Bonehilda",
+    "description": "A mod that makes Bonehilda stay in the lot until you leave the lot.",
+    "url": "https://td1sims.tumblr.com/post/641711266463924224/sp18-paranormal-sp-mods",
+    "supported": true,
+    "to_show": true
+  },
+  "no_auto_lights": {
+    "name": "No Auto Lights on Haunted Lots",
+    "description": "A mod that would stop lights becoming Auto-Lighted",
+    "url": "https://td1sims.tumblr.com/post/641711266463924224/sp18-paranormal-sp-mods",
+    "supported": true,
+    "to_show": true
+  },
+  "lifestyles_fix": {
+    "name": "3+ Lifestyles Fix",
+    "description": "A mod that fixes that 3+ Lifestyles issue.",
+    "url": "https://td1sims.tumblr.com/post/642151870733975552/se-3-lifestyles-fix",
+    "supported": false,
+    "to_show": true
+  },
+  "purchase_odds": {
+    "name": "Purchase Oddities from a Certain Figure",
+    "description": "Allows the procurement of paranormal items from a specter.",
+    "url": "https://td1sims.tumblr.com/post/642184535598104576/sp18-paranormal-sp-mods-set-2",
+    "supported": true,
+    "to_show": true
+  },
+  "para_fix": {
+    "name": "Paranormal Investigator Instance Startup Fix",
+    "description": "This mod potentially fixes an issue where no specters and accursed objects spawn on load.",
+    "url": "https://td1sims.tumblr.com/post/642184535598104576/sp18-paranormal-sp-mods-set-2",
+    "supported": false,
+    "to_show": true
+  },
+  "nerf_dust_bunny": {
+    "name": "Nerf Dust Bunny Forage",
+    "description": "A mod that nerfs Dust bunny Forage to disallow obtaining any value of more than 1k.",
+    "url": "https://td1sims.tumblr.com/post/644908768990314496/sp22-nerf-dust-bunny-forage",
+    "supported": true,
+    "to_show": true
+  },
+  "sw_saber": {
+    "name": "Converted Lightsabers",
+    "description": "A mod that makes Rey's and Kylo Ren's Lightsabers fully functional.",
+    "url": "https://td1sims.tumblr.com/post/645743789515866112/gp09-converted-lightsabers",
+    "supported": true,
+    "to_show": true
+  },
+  "sci_obj_mod": {
+    "name": "Modified Scientist Objects",
+    "description": "A mod that allows former scientists to use Scientist Objects.",
+    "url": "https://td1sims.tumblr.com/post/646139015555317760/debugalter-modified-scientist-objects",
+    "supported": true,
+    "to_show": true
+  },
+  "unlock_rewards": {
+    "name": "Unlock Rewards",
+    "description": "A mod that unlocks rewards onto Sims.",
+    "url": "https://www.patreon.com/posts/50442532",
+    "supported": false,
+    "to_show": false
+  }
+}

@@ -15,10 +15,10 @@ from CoFunctions.ServerDataHandler import on_init, get_serverdata_value, update_
 from UtilLib.LoggerService import BaseLoggerService
 from UtilLib.ServicingPipeline import check_current_version
 from UtilLib.EmojiHandler import get_emoji
-
-# from MasterApprenticeLib.TD1_Lib_ApprenticeLogger import ApprenticeLogger
 from UtilLib.CommandLevel import CommandHandler
 
+# ======================================================================================================================
+# Core Variables
 # Start Time for Bot Uptime based upon comparison
 START_TIME = time.time()
 
@@ -26,6 +26,8 @@ START_TIME = time.time()
 INTENTS = Intents.all()
 
 
+# ======================================================================================================================
+# Classes
 class CoreFunctionService(BaseLoggerService):
     def __init__(self):
         super(CoreFunctionService, self).__init__(

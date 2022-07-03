@@ -38,15 +38,17 @@ pip install dotenv
 
 To use this python repository as your discord bot, use `git clone` to clone the repository, alternatively you can directly download this code.
 
-Before running the bot, you need to create a file called `Discord_Token.env`. The contents of the file should be as followes:
+Before running the bot, you need to create a file called `Discord_Token.env`. The contents of the file should be as follows:
 
 ```commandline
 DISCORD_TOKEN={TOKEN}
-
+DISCORD_DEBUG_TOKEN={TOKEN_DEBUG}
 DEVELOPER_ID={DEVELOPERID}
 ```
 
 **Make sure to replace those with `{}` with the correct values.**
+
+As for 
 
 To start up the bot (make sure that your shell is in the repository folder):
 ```commandline
