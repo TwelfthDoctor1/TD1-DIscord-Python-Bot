@@ -57,8 +57,8 @@ class JSONHandler:
 
             except urllib.error.URLError as e:
                 JSONHANDLER_SERVICE.error(
-                    f"[FAILURE IN GETTING VERSION IN GITHUB] Either the associated URL is invalid or that the data is not raw "
-                    f"or may be caused by other issues."
+                    f"[FAILURE IN GETTING VERSION IN GITHUB] Either the associated URL is invalid or that the data is "
+                    f"not raw or may be caused by other issues."
                     f"\nPerhaps Check your internet connection?"
                 )
 

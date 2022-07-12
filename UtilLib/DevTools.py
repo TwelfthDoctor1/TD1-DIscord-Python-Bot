@@ -11,7 +11,10 @@ async def lookup_dev_cmd(ctx: Context or ApplicationCommandInteraction, client):
         server=ctx.guild
     )
 
-    eligibility = await cmd_handler.check_cmd_req(ctx)
+    eligibility = await cmd_handler.check_cmd_req(
+        ctx,
+        message="This is a restricted command."
+    )
 
     if eligibility is False:
         return
@@ -20,6 +23,5 @@ async def lookup_dev_cmd(ctx: Context or ApplicationCommandInteraction, client):
     await ctx.reply(f"USER: {dev_usr.display_name} | {dev_usr.discriminator}")
 
     for emoji in await ctx.guild.fetch_emojis():
-
         await ctx.reply(f"EMOJI: {emoji}")
         print(emoji)

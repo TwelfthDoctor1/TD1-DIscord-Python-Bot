@@ -123,8 +123,8 @@ async def uptime(ctx: Context):
 
 
 @client.command("set_presence")
-async def set_msg_presence(ctx: Context, activity: str, *, args):
-    return await client.update_presence(ctx, activity, args)
+async def set_msg_presence(ctx: Context, activity: str, status: str, *, args):
+    return await client.update_presence(ctx, activity, status, args)
 
 
 @client.command()
@@ -164,7 +164,7 @@ async def allowable_events(ctx: Context, value):
 
 @client.command()
 async def emoji_test(ctx: Context, emoji_id):
-    emoji = get_emoji(ctx.guild, emoji_id)
+    emoji = get_emoji(await ctx.guild.fetch_emojis(), emoji_id)
     return await ctx.reply(f"{emoji}")
 
 
@@ -201,8 +201,8 @@ async def version_slash(inter: ApplicationCommandInteraction):
 
 
 @client.slash_command(name="set_presence", description="Change the presence of the Bot.")
-async def update_presence_slash(inter: ApplicationCommandInteraction, activity: str, *, message):
-    return await client.update_presence(inter, activity, message)
+async def update_presence_slash(inter: ApplicationCommandInteraction, activity: str, status: str, *, message):
+    return await client.update_presence(inter, activity, status, message)
 
 
 @client.slash_command(name="set_init_presence", description="Change the presence of the bot to the one used at startup.")
@@ -264,7 +264,7 @@ async def list_ts4_repo_slash(inter: ApplicationCommandInteraction):
         github_embed.add_field(
             name=repo_data["name"],
             value=f"{repo_data['description']}\n\n"
-                  f"-> [View Repository]({repo_data['url']})"
+                  f"-> [View Repository]({repo_data['url']})\n"
         )
 
     await inter.response.send_message(embed=github_embed)
@@ -295,7 +295,7 @@ async def list_git_repo_slash(inter: ApplicationCommandInteraction):
             desc = f"{repo_data['description']}"
 
             if repo_data['redacted'] is False:
-                desc += f"\n\n-> [View Repository]({repo_data['url']})"
+                desc += f"\n\n-> [View Repository]({repo_data['url']})\n"
 
             github_embed.add_field(
                 name=repo_data["name"],
@@ -313,7 +313,10 @@ async def list_td1_ts4_mods_slash(inter: ApplicationCommandInteraction):
 
     github_embed = Embed(
         title="TD1 TS4 Mods",
-        description="Listed here is a list of TS4 Mods that are owned and maintained by TwelfthDoctor1.",
+        description="Listed here is a list of TS4 Mods that are owned and maintained by TwelfthDoctor1.\n\n"
+                    "Status Notation:\n"
+                    "[SUPPORTED] - Mod is currently supported\n"
+                    "[UNKNOWN] - Mod is either no longer supported or is in an unknown state",
         timestamp=datetime.datetime(
             year=datetime.datetime.now().year,
             month=datetime.datetime.now().month,
@@ -331,7 +334,7 @@ async def list_td1_ts4_mods_slash(inter: ApplicationCommandInteraction):
 
             desc += f"\n\nSTATUS: [{'SUPPORTED' if repo_data['supported'] is True else 'UNKNOWN'}]"
 
-            desc += f"\n\n-> [View Mod]({repo_data['url']})"
+            desc += f"\n\n-> [View Mod]({repo_data['url']})\n"
 
             github_embed.add_field(
                 name=repo_data["name"],

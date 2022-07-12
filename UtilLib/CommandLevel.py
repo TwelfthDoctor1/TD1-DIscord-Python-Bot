@@ -110,13 +110,13 @@ class CommandHandler:
             return "Bot Developer"
 
     def return_min_lvl(self):
-        return f"The minimum required rank to use this command is {self.return_set_lvl(self.min_level)}."
+        return f"The minimum required rank to use this command is `{self.return_set_lvl(self.min_level)}`."
 
     def return_max_lvl(self):
         if self.max_level == self.min_level:
             return ""
         else:
-            return f"The maximum allowable rank is {self.return_set_lvl(self.max_level)}."
+            return f"The maximum allowable rank is `{self.return_set_lvl(self.max_level)}`."
 
     async def check_cmd_req(self, ctx: Context or ApplicationCommandInteraction, message=None):
         """

@@ -4,7 +4,7 @@ import subprocess
 import sys
 import time
 from disnake import Activity, ActivityType, Game, Embed, Colour, Intents, ApplicationCommandInteraction, Member, \
-    TextChannel, Guild, Emoji, PartialEmoji
+    TextChannel, Guild, Emoji, PartialEmoji, Status
 from disnake.abc import GuildChannel
 from disnake.ext import commands
 from disnake.ext.commands import Context
@@ -89,7 +89,9 @@ class TD1BotClient(commands.Bot):
         global START_TIME
         START_TIME = time.time()
 
-        await self.change_presence(activity=presence)
+        await self.change_presence(
+            activity=presence
+        )
 
     async def uptime(self, ctx: Context or ApplicationCommandInteraction):
         """
@@ -116,12 +118,13 @@ class TD1BotClient(commands.Bot):
 
         await ctx.response.send_message(embed=embed) if hasattr(ctx, "response") else await ctx.send(embed=embed)
 
-    async def msg_presence(self, activity: ActivityType, message: str):
+    async def msg_presence(self, activity: ActivityType, message: str, status: str):
         """
         Sets a customised presence of the Bot.
 
         For command method, you should parse it through update_presence().
 
+        :param status: The Status in String that is to be converted into Status Class
         :param activity: The Activity Type in ActivityType
         [playing, listening, watching, streaming, custom, competing]
         :param message: The message itself, in str
@@ -145,7 +148,11 @@ class TD1BotClient(commands.Bot):
             details="For Help: ~help | !help | ?help | @Sir Top Hat help",
             application_id=797501470844911617,
         )
-        await self.change_presence(activity=presence)
+
+        await self.change_presence(
+            activity=presence,
+            status=self.get_status(status.lower())
+        )
 
     async def on_ready(self):
         """
@@ -264,10 +271,11 @@ class TD1BotClient(commands.Bot):
 
         await ctx.send(f"[{proj_cpr}] | [{log_cpr}]")
 
-    async def update_presence(self, ctx: Context or ApplicationCommandInteraction, activity: str, args):
+    async def update_presence(self, ctx: Context or ApplicationCommandInteraction, activity: str, status: str, args):
         """
         Command method to update presence. Parses into msg_preference() for lateral execution.
 
+        :param status: Status in string
         :param ctx: Context or ApplicationCommandInteraction
         :param activity: The Activity Type in ActivityType
         [playing, listening, watching, streaming, custom, competing]
@@ -285,7 +293,7 @@ class TD1BotClient(commands.Bot):
         if eligibility is False:
             return
 
-        await self.msg_presence(self.determine_activity(activity), args)
+        await self.msg_presence(self.determine_activity(activity), args, status)
 
         return await ctx.response.send_message("Presence Updated.") if hasattr(ctx, "response") \
             else await ctx.send("Presence Updated.")
@@ -348,3 +356,18 @@ class TD1BotClient(commands.Bot):
 
         return await ctx.response.send_message(f"Allowable Events for {ctx.guild.name} is set to {value}.") if hasattr(ctx, "response") \
             else await ctx.send(f"Allowable Events for {ctx.guild.name} is set to {value}.")
+
+    @staticmethod
+    def get_status(status):
+        if status == "online":
+            return Status.online
+        elif status == "away" or status == "idle":
+            return Status.idle
+        elif status == "do not disturb" or status == "do_not_disturb" or status == "dnd":
+            return Status.dnd
+        elif status == "invisible" or status == "invis":
+            return Status.invisible
+        elif status == "streaming":
+            return Status.streaming
+        else:
+            return Status.online
