@@ -17,7 +17,7 @@
     "name": "Sage of Mastery Magic + Alchemy",
     "description": "A mod that adds 2 new Sages, 25 spells and 15 potions into the game. Requires the Spellbook Injector.",
     "url": "https://modthesims.info/download.php?t=643617",
-    "supported": false,
+    "supported": true,
     "to_show": true
   },
   "occulthybrid": {
