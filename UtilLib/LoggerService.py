@@ -2,8 +2,8 @@ import enum
 from MasterApprenticeLib.TD1_Lib_MasterLogger import MasterLogger
 
 
-class LoggerServiceEnums(enum):
-    pass
+#class LoggerServiceEnums(enum):
+#    pass
 
 
 class BaseLoggerService(MasterLogger):
