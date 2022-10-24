@@ -1,4 +1,9 @@
+import enum
 from MasterApprenticeLib.TD1_Lib_MasterLogger import MasterLogger
+
+
+class LoggerServiceEnums(enum):
+    pass
 
 
 class BaseLoggerService(MasterLogger):
@@ -91,3 +96,7 @@ class BaseLoggerService(MasterLogger):
 
         if to_console is True:
             print(message)
+
+    @property
+    def get_service_name(self):
+        return self.__class__.__name__

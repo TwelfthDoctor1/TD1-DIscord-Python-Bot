@@ -345,6 +345,11 @@ async def list_td1_ts4_mods_slash(inter: ApplicationCommandInteraction):
     await inter.response.send_message(embed=github_embed)
 
 
+@client.slash_command(name="set_reminder", description="Set a reminder on the Bot.")
+async def set_reminder_slash(inter: ApplicationCommandInteraction):
+    pass
+
+
 # ======================================================================================================================
 # Bot Startup Process
 # Initiate Communication with Discord API and connect to Allocated Bot Account specified in DevPortal
